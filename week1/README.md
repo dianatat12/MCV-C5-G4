@@ -24,6 +24,11 @@ Accuracy Assessment:
 - Computed accuracy graphs to assess overall model performance.
 - Conducted a detailed comparison of PyTorch accuracy results with benchmarks from Keras.
 
+The code is organised as follow:
+- Keras implementation of the Model 11 (the best model from C3) : train_tf.py
+- PyTorch implementation of Model 11: train_torch.py
+- PyTorch Lightening implementation of Model 11: train_lightning.py
+
 Link to the presentation: 
 https://docs.google.com/presentation/d/1_XVn3uTv0WzuJBZWiuN_XuqG3Vy52icjIBNK-rZc1OA/edit?usp=sharing
 
