@@ -1,7 +1,7 @@
 # C5-Project-Week 1 Introduction to Pytorch
 
 We are group 4, composed of:
-- Aleix Pujol
+- Aleix Pujol - aleixpujolcv@gmail.com
 - Diana Tat - dianatat120@gmail.com
 - Georg Herodes - georgherodes99@gmail.com
 - Gunjan Paul - gunjan.mtbpaul@gmail.com
