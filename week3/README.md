@@ -12,7 +12,9 @@ Link to the report: https://www.overleaf.com/9918637622cndkjfsrhqrf#03d873
 
 ### Week 3 Tasks:
 #### Task (a): Image retrieval with pre-trained image classification model.
-
+The code for this task can be found in:
+- pre_trained_resnet.py
+- finetune_resnet.py : fine-tuned version of the original code
   
 #### Task (b): Train the model on metric learning (Siamese network)
 
