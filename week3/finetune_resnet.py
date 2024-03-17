@@ -16,22 +16,17 @@ import copy
 import wandb
 import pickle
 
-# Initialize WandB
 wandb.init(project="c6_pretrained_resnet")
 
-# Constants
 MIT_dataset = "/ghome/mcv/datasets/C3/MIT_split"
 train_dataset_dir = "/ghome/group04/MCV-C5-G4/augmented_dataset"
 test_dataset_dir = "/ghome/mcv/datasets/C3/MIT_small_train_1/test"
 
-# Set the device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Image dimensions
 IMG_HEIGHT = 224
 IMG_WIDTH = 224
 
-# Data augmentation parameters
 rotation_range = 30
 width_shift_range = 0.2
 height_shift_range = 0.2
@@ -39,7 +34,6 @@ shear_range = 0.2
 zoom_range = 0.2
 horizontal_flip = True
 
-# PyTorch transformations for training data
 transform_train = transforms.Compose([
     transforms.RandomRotation(rotation_range),
     transforms.RandomHorizontalFlip(horizontal_flip),
@@ -52,7 +46,6 @@ transform_train = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-# PyTorch transformations for retrieval data (non-augmented)
 transform_retrieval = transforms.Compose([
     transforms.Resize((IMG_HEIGHT, IMG_WIDTH)),
     transforms.ToTensor(),
@@ -61,22 +54,18 @@ transform_retrieval = transforms.Compose([
 train_dataset = ImageFolder(root=train_dataset_dir, transform=transform_train)
 test_dataset = ImageFolder(root=test_dataset_dir, transform=transform_retrieval)
 
-# Create DataLoaders for batch processing
 batch_size = 32
 train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-# Define the model
 model = models.resnet18(pretrained=True)
-# Modify the final fully connected layer for your number of classes
+
 num_classes = len(train_dataset.classes)
 model.fc = nn.Linear(model.fc.in_features, num_classes)
 model.to(device)
 
-# Loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 
-# Hyperparameters grid for hyperparameter tuning
 param_grid = {
     'lr': [0.001, 0.0005],
     'weight_decay': [0.01, 0.001],
@@ -89,7 +78,6 @@ best_accuracy = 0.0
 for params in ParameterGrid(param_grid):
     print(f"Training with parameters: {params}")
     
-    # Fine-tuning Pretrained Layers
     if params['freeze_layers']:
         for param in model.parameters():
             param.requires_grad = False
@@ -99,18 +87,14 @@ for params in ParameterGrid(param_grid):
         for param in model.parameters():
             param.requires_grad = True
     
-    # Optimizer
     optimizer = optim.Adam(model.parameters(), lr=params['lr'], weight_decay=params['weight_decay'])
     
-    # Learning rate scheduler
     scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=2, verbose=True)
     
-    # Early stopping
     patience = 5
     early_stopping_counter = 0
     best_model_state_dict = copy.deepcopy(model.state_dict())
     
-    # Initialize lists to store precision and recall values
     precision_values = []
     recall_values = []
 
@@ -138,7 +122,6 @@ for params in ParameterGrid(param_grid):
         accuracy = accuracy_score(all_labels, all_preds)
         average_loss = total_loss / len(train_dataloader)
 
-        # Test loss
         model.eval()
         test_loss = 0.0
         all_test_labels = []
@@ -157,10 +140,8 @@ for params in ParameterGrid(param_grid):
         test_accuracy = accuracy_score(all_test_labels, all_test_preds)
         average_test_loss = test_loss / len(test_dataloader)
         
-        # Update learning rate
         scheduler.step(test_accuracy)
 
-        # Early stopping
         if test_accuracy > best_accuracy:
             best_accuracy = test_accuracy
             best_model_state_dict = copy.deepcopy(model.state_dict())
@@ -171,7 +152,6 @@ for params in ParameterGrid(param_grid):
                 print("Early stopping!")
                 break
     
-        # Compute Mean Average Precision (MAP)
         model.eval()
         all_scores = []
         all_labels = []
@@ -182,33 +162,26 @@ for params in ParameterGrid(param_grid):
                 test_inputs, test_labels = test_inputs.to(device), test_labels.to(device)
                 test_outputs = model(test_inputs)
                 probabilities = nn.functional.softmax(test_outputs, dim=1)
-                scores = probabilities[:, 1].cpu().numpy()  # Probability of class 1
+                scores = probabilities[:, 1].cpu().numpy()  
                 all_scores.extend(scores)
                 all_labels.extend(test_labels.cpu().numpy())
-                # Convert labels to binary
+
                 binary_labels.extend([(1 if label == 1 else 0) for label in test_labels.cpu().numpy()])
 
-        # Convert labels to binary
         binary_labels = np.array([(1 if label == 1 else 0) for label in all_labels])
 
         map_score = average_precision_score(binary_labels, all_scores)
 
-        # Compute precision@1 and precision@5
-        # Convert scores to binary predictions
         binary_preds = [1 if score >= 0.5 else 0 for score in all_scores]
 
-        # Only consider precision for class 1 (relevant class)
         prec_at_1 = precision_score(binary_labels, binary_preds, pos_label=1)
         prec_at_5 = precision_score(binary_labels, [1 if score >= sorted(all_scores, reverse=True)[4] else 0 for score in all_scores], pos_label=1)
 
-        # Compute precision-recall curve
         precision, recall, _ = precision_recall_curve(binary_labels, all_scores)
         
-        # Append precision and recall values to the lists
         precision_values.append(precision)
         recall_values.append(recall)
 
-        # Log precision and recall values to WandB
         wandb.log({"precision": precision, "recall": recall})
 
         wandb.log({
@@ -225,7 +198,6 @@ for params in ParameterGrid(param_grid):
 
         print(f'Epoch {epoch + 1}/20 - Loss: {average_loss:.4f} - Accuracy: {accuracy:.4f} - Test Loss: {average_test_loss:.4f} - Test Accuracy: {test_accuracy:.4f} - MAP: {map_score:.4f} - Precision@1: {prec_at_1:.4f} - Precision@5: {prec_at_5:.4f}')
 
-    # Plot precision-recall curve
     plt.figure()
     for i in range(len(precision_values)):
         plt.plot(recall_values[i], precision_values[i], marker='.', label=f'Epoch {i+1}')
@@ -236,16 +208,12 @@ for params in ParameterGrid(param_grid):
     plt.savefig(f'precision_recall_curve_{params}.png')
     plt.close()
 
-    # Load the best model state dict
     model.load_state_dict(best_model_state_dict)
-    
-    # Log best accuracy and parameters
+
     print(f'Best Accuracy: {best_accuracy:.4f} with parameters: {params}')
 
-# Save the best model
 torch.save(model.state_dict(), "best_model.pth")
 
-# Save validation features to a pickle file
 validation_embeddings = []
 validation_labels = []
 
