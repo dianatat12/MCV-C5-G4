@@ -6,7 +6,7 @@ We are group 4, composed of:
 - Georg Herodes - georgherodes99@gmail.com
 - Gunjan Paul - gunjan.mtbpaul@gmail.com
 
-Link to the presentation: https://docs.google.com/presentation/d/1nzJLR1mX-PKBNm1XclOPc5sPGekgsm1s-84SitKpzbw/edit#slide=id.g2be03bd668c_0_20
+Link to the presentation: https://docs.google.com/presentation/d/1nzJLR1mX-PKBNm1XclOPc5sPGekgsm1s-84SitKpzbw/edit#slide=id.g2beaf97adb3_6_385
 
 Link to the report: https://www.overleaf.com/9918637622cndkjfsrhqrf#03d873
 
