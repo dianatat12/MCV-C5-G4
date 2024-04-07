@@ -6,7 +6,7 @@ We are group 4, composed of:
 - Georg Herodes - georgherodes99@gmail.com
 - Gunjan Paul - gunjan.mtbpaul@gmail.com
 
-Link to the presentation: https://docs.google.com/presentation/d/1Kn2zyPVchNKuzN84RVbYETtOfduilwyIQWMBtdWJxsU/edit#slide=id.g2c3a6f339d1_0_301
+Link to the presentation: 
 
 For the report we achieved compile timeout on Overleaf so we had to compile it locally on our computers. We have pushed the report in PDF format, as well as tex files in the repository.
 
