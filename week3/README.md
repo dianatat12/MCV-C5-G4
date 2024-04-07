@@ -26,6 +26,7 @@ The code for this task can be found in:
 
 
 #### Task (e): Image Retrieval on COCO with Faster R-CNN or Mask R-CNN
+Run task_e_train_eval.ipynb
 
 
 
