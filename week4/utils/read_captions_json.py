@@ -23,9 +23,7 @@ def read_captions_json(json_path):
     return image_data, caption_data
 
 
-dataset_path = (
-    "/home/georg/projects/university/C5_Visual_Recognition/MCV-C5-G4/dataset/COCO"
-)
+dataset_path = "/ghome/group04/mcv/datasets/C5/COCO/"
 train_captions_file = os.path.join(dataset_path, "captions_train2014.json")
 val_captions_file = os.path.join(dataset_path, "captions_val2014.json")
 
