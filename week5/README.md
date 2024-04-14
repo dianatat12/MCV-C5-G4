@@ -1,4 +1,4 @@
-# C5-Project-Week 4 Cross-modal Retrieval
+# C5-Project-Week 5 Diffusion Models
 
 We are group 4, composed of:
 - Aleix Pujol - aleixpujolcv@gmail.com
@@ -6,18 +6,9 @@ We are group 4, composed of:
 - Georg Herodes - georgherodes99@gmail.com
 - Gunjan Paul - gunjan.mtbpaul@gmail.com
 
-Link to the presentation: 
-
-For the report we achieved compile timeout on Overleaf so we had to compile it locally on our computers. We have pushed the report in PDF format, as well as tex files in the repository.
-
-### Week 4 Tasks:
-#### Task (a): Implement basic Image-to-text retrieval.
-
-  
-#### Task (b): Implement basic Text-to-image retrieval.
+Link to the presentation: https://docs.google.com/presentation/d/1oKogdwxe-q4rSmGrw7tsQ_lbXg2Rrs9iXijUgklOsog/edit?usp=sharing
 
 
-#### Task (c): Use BERT embedding as Text feature extractor.
 
 
 
