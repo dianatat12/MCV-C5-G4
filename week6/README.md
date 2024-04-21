@@ -10,7 +10,8 @@ Link to the presentation:
 
 ## Instructions to run the code
 
-### For task f, you need to run the task_f.ipynb which can be found in the task_f folder. After running the code, a PCA visualization plot will be displayed showing the representations of Bag of Words (BoW) and BERT embeddings in two dimensions.
+### Task f
+For task f, you need to run the task_f.ipynb which can be found in the task_f folder. After running the code, a PCA visualization plot will be displayed showing the representations of Bag of Words (BoW) and BERT embeddings in two dimensions.
 
 
 
