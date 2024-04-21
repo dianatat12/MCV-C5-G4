@@ -6,7 +6,7 @@ We are group 4, composed of:
 - Georg Herodes - georgherodes99@gmail.com
 - Gunjan Paul - gunjan.mtbpaul@gmail.com
 
-Link to the presentation: 
+Link to the presentation: https://docs.google.com/presentation/d/1Nq_7xpg0kE_MP_0IyT45t2iKNSOiyvHbd-jMPDyXkHY/edit?usp=sharing
 
 ## Instructions to run the code
 
