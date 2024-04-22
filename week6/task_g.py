@@ -29,7 +29,7 @@ dm = MultimodalDataModule(train_csv_file='/home/georg/projects/university/C5/mul
                       image_dir='/home/georg/projects/university/C5/multimodal_dataset/First_Impressions_v3_multimodal',
                       batch_size=32, 
                       augmentations=True,
-                      sampler='wrs',
+                      #sampler='wrs',
                       num_workers=16)
 dm.setup()
 train_labels = [i-1 for i in dm.train_dataset.df['AgeGroup'].values]
@@ -37,8 +37,6 @@ train_labels = [i-1 for i in dm.train_dataset.df['AgeGroup'].values]
 model = MultimodalAgePredictionModel(num_classes=7)#, class_weights=get_class_weights(train_labels))
 
 version = 0
-# Instantiate the CSVLogger callback
-#csv_logger = CSVLogger(save_dir='task_b_logs', name='age_prediction_logs', version=version)
 wandb.login()
 wandb.init(project='c5_w6_multimodal', name = 'lightning')
 wandb_logger = WandbLogger(name='age_prediction_logs', version=version)

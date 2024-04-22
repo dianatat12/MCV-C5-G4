@@ -6,6 +6,8 @@ from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor, Mode
 from torch.optim.lr_scheduler import CosineAnnealingLR
 import wandb
 from pytorch_lightning.tuner.tuning import Tuner
+from pytorch_lightning.callbacks import ModelCheckpoint
+
 
 
 
@@ -48,9 +50,23 @@ scheduler = CosineAnnealingLR(model.optimizer, T_max=50)  # Adjust T_max (number
 lr_monitor = LearningRateMonitor(logging_interval='epoch')
 
 
+# Define the directory to save the checkpoints
+checkpoint_dir = 'checkpoints/'
+
+# Instantiate the ModelCheckpoint callback
+checkpoint_callback = ModelCheckpoint(
+    dirpath=checkpoint_dir,  # Directory to save the checkpoints
+    filename='model-{epoch:02d}-{val_loss:.2f}',  # File name format for saving the checkpoints
+    monitor='val_loss',  # Monitor validation loss for saving the best model
+    mode='min',  # 'min' mode saves the model with the minimum monitored quantity (e.g., validation loss)
+    save_top_k=3,  # Save the top 3 best models
+    verbose=True  # Print verbose messages
+)
+
+
 trainer = pl.Trainer(max_epochs=50, 
                      accelerator='auto', 
-                     callbacks=[plot_metrics_callback, early_stop_callback, lr_monitor], 
+                     callbacks=[plot_metrics_callback, early_stop_callback, lr_monitor,checkpoint_callback], 
                      logger=wandb_logger)
 
 tuner = Tuner(trainer)
